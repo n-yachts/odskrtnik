@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nápověda – Odškrtník</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+  <meta name="theme-color" content="#1f5f8b">
+  <link rel="stylesheet" href="styles.css?v=20261110-0839">
+  <style>
+    .help { display: grid; grid-template-columns: 220px 1fr; gap: 2.5rem; max-width: 1100px; margin: 0 auto; padding: 0 1.25rem 5rem; }
+    .toc { position: sticky; top: 1rem; align-self: start; max-height: calc(100vh - 2rem); overflow: auto; font-size: .9rem; }
+    .toc b { display: block; font-size: .75rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 0 0 .5rem; }
+    .toc ol { list-style: none; padding: 0; margin: 0; }
+    .toc li { margin: 0; }
+    .toc a { display: block; padding: .3rem .6rem; border-radius: 7px; color: var(--ink); text-decoration: none; }
+    .toc a:hover { background: var(--surface); }
+    .toc ol ol a { padding-left: 1.4rem; color: var(--muted); font-size: .86rem; }
+    article { min-width: 0; }
+    article section { padding-top: .5rem; margin-bottom: 2.5rem; scroll-margin-top: 1rem; }
+    article h1 { font-size: 2rem; margin: .5rem 0 .5rem; }
+    article h2 { font-size: 1.45rem; margin: 0 0 .8rem; padding-top: 1rem; border-top: 1px solid var(--line); }
+    article h3 { font-size: 1.1rem; margin: 1.6rem 0 .5rem; scroll-margin-top: 1rem; }
+    article p, article li { max-width: 72ch; }
+    .lead { font-size: 1.1rem; color: var(--muted); max-width: 64ch; }
+    figure { margin: 1.2rem 0 1.6rem; }
+    figure img { display: block; max-width: 100%; height: auto; border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); }
+    figure.phone img { max-width: 300px; }
+    figure.half { display: inline-block; vertical-align: top; width: calc(50% - .6rem); margin-right: .6rem; }
+    figcaption { color: var(--muted); font-size: .88rem; margin-top: .5rem; }
+    .tip, .warn { border-radius: 10px; padding: .8rem 1rem; margin: 1rem 0; max-width: 72ch; font-size: .95rem; line-height: 1.5; }
+    .tip { background: var(--soon-bg); }
+    .warn { background: var(--warn-bg); }
+    .tip b:first-child, .warn b:first-child { display: block; margin-bottom: .2rem; }
+    table { border-collapse: collapse; width: 100%; max-width: 820px; font-size: .92rem; margin: 1rem 0; background: var(--surface); border-radius: 10px; overflow: hidden; }
+    th, td { text-align: left; padding: .55rem .75rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { background: var(--bg); font-weight: 600; }
+    kbd { font-family: inherit; font-size: .85em; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 5px; padding: .05em .4em; background: var(--surface); }
+    .steps-list > li { margin-bottom: .6rem; }
+    .back { display: inline-block; margin: 1rem 0 0; }
+    details.faq { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: .7rem 1rem; margin: .5rem 0; max-width: 72ch; }
+    details.faq summary { color: var(--ink); font-weight: 600; }
+    details.faq p { margin: .6rem 0 .2rem; }
+    @media (max-width: 860px) {
+      .help { grid-template-columns: 1fr; gap: 0; }
+      .toc { position: static; max-height: none; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 1rem; margin-bottom: 1.5rem; }
+      figure.half { display: block; width: auto; margin-right: 0; }
+    }
+  </style>
+
+  <style>figure.phone img { max-width: 320px; } main, .topbar { max-width: 1100px; }</style>
+</head>
+<body>
+  <header class="topbar" style="max-width:1100px">
+    <a class="brand" href="./"><img class="logo" src="icons/icon-192.png" alt="" width="26" height="26"> Odškrtník</a>
+    <nav class="top-actions"><a class="btn ghost" href="./">← Zpět do aplikace</a></nav>
+  </header>
+
+  <div class="help">
+    <nav class="toc" aria-label="Obsah">
+      <b>Obsah</b>
+      <ol>
+        <li><a href="#uvod">Co je Odškrtník</a></li>
+        <li><a href="#nastaveni">První spuštění</a>
+          <ol>
+            <li><a href="#krok-projekt">1. Projekt</a></li>
+            <li><a href="#krok-api">2. Tři API</a></li>
+            <li><a href="#krok-souhlas">3. Souhlasová obrazovka</a></li>
+            <li><a href="#krok-client">4. Client ID</a></li>
+            <li><a href="#krok-klic">5. API klíč</a></li>
+            <li><a href="#prihlaseni">6. Přihlášení</a></li>
+          </ol>
+        </li>
+        <li><a href="#seznamy">Seznamy a předlohy</a></li>
+        <li><a href="#odskrtavani">Odškrtávání</a></li>
+        <li><a href="#znovu">Začít znovu</a>
+          <ol>
+            <li><a href="#typy">Typy výletu</a></li>
+            <li><a href="#historie">Historie</a></li>
+          </ol>
+        </li>
+        <li><a href="#upravy">Úpravy položek</a></li>
+        <li><a href="#tabulky">V Google Tabulkách</a></li>
+        <li><a href="#sdileni">Sdílení</a>
+          <ol>
+            <li><a href="#sdileni-poslat">Nasdílet seznam</a></li>
+            <li><a href="#sdileni-otevrit">Otevřít sdílený seznam</a></li>
+          </ol>
+        </li>
+        <li><a href="#synchronizace">Ukládání a bez signálu</a></li>
+        <li><a href="#instalace">Instalace do telefonu</a></li>
+        <li><a href="#potize">Řešení potíží</a></li>
+        <li><a href="#soukromi">Soukromí a oprávnění</a></li>
+      </ol>
+    </nav>
+
+    <article>
+      <section id="uvod">
+        <h1>Odškrtník</h1>
+        <p class="lead">Zaškrtávací seznamy, které se dají opakovaně odškrtávat: kontrola <b>před vyplutím</b>,
+          <b>zazimování lodi</b>, <b>balení na cesty</b>. Před každým použitím seznam vynulujete a jedete od začátku.</p>
+        <ul>
+          <li>Každý seznam je <b>Google Tabulka</b> ve vašem Disku: kategorie, položky a zatržítka. Upravovat ho můžete
+            v aplikaci i přímo v Tabulkách.</li>
+          <li>Položky mohou mít <b>typy</b> (hory, moře, služební cesta…). Při startu vyberete, na co se chystáte,
+            a uvidíte jen to, co k tomu patří.</li>
+          <li>Seznam můžete <b>sdílet</b> s posádkou nebo rodinou – odškrtávat může víc lidí najednou.</li>
+          <li>Funguje i <b>bez signálu</b>, odškrtnutí se odešlou po připojení.</li>
+        </ul>
+        <figure class="phone"><img src="help/img/seznam.png?v=20261110-0839" alt="Seznam Balení na cesty s odškrtnutými položkami" loading="lazy"></figure>
+      </section>
+
+      <section id="nastaveni">
+        <h2>První spuštění</h2>
+        <p>Při prvním otevření vás provede <b>průvodce</b>. V Google Cloud je potřeba jednou povolit přístup
+          k Tabulkám a Disku. Je to zdarma.</p>
+        <div class="tip"><b>Máte už projekt v Google Cloud</b> (třeba pro jinou aplikaci)? Můžete použít ten –
+          zkontrolujte souhlasovou obrazovku a Client ID a doplňte, co chybí: hlavně tři API (krok 2) a API klíč (krok 5).</div>
+        <figure><img src="help/img/pruvodce-uvod.png?v=20261110-0839" alt="Úvod průvodce" loading="lazy">
+          <figcaption>Úvod průvodce. Kdo už má Client ID i API klíč, může kroky přeskočit.</figcaption></figure>
+
+        <h3 id="krok-projekt">1. Projekt v Google Cloud</h3>
+        <p>Máte-li už projekt, v <a href="https://console.cloud.google.com/" target="_blank" rel="noopener">konzoli</a>
+          ho nahoře vyberte. Jinak založte nový přes
+          <a href="https://console.cloud.google.com/projectcreate" target="_blank" rel="noopener">vytvoření projektu</a>
+          (název třeba <code>Odskrtnik</code>).</p>
+
+        <h3 id="krok-api">2. Povolte tři API</h3>
+        <p>U každého klikněte na <b>Povolit</b> (Enable):</p>
+        <ul>
+          <li><a href="https://console.cloud.google.com/apis/library/drive.googleapis.com" target="_blank" rel="noopener">Google Drive API</a> – zakládání a sdílení seznamů,</li>
+          <li><a href="https://console.cloud.google.com/apis/library/sheets.googleapis.com" target="_blank" rel="noopener">Google Sheets API</a> – položky a zatržítka v tabulce,</li>
+          <li><a href="https://console.cloud.google.com/apis/library/picker.googleapis.com" target="_blank" rel="noopener">Google Picker API</a> – okno Google Disku pro otevření sdíleného seznamu.</li>
+        </ul>
+        <figure><img src="help/img/pruvodce-api.png?v=20261110-0839" alt="Krok průvodce: povolení API" loading="lazy"></figure>
+
+        <h3 id="krok-souhlas">3. Souhlasová obrazovka</h3>
+        <p>Pokud ji projekt už má, krok přeskočte. Jinak v
+          <a href="https://console.cloud.google.com/auth/overview" target="_blank" rel="noopener">Google Auth Platform</a>
+          → <b>Začít</b>, název <code>Odškrtník</code>, váš e-mail, cílová skupina <b>Externí</b>; pak v
+          <a href="https://console.cloud.google.com/auth/audience" target="_blank" rel="noopener">Audience</a>
+          <b>Publikovat aplikaci</b>.</p>
+        <div class="warn"><b>Proč publikovat?</b> V režimu <i>Testing</i> Google po 7 dnech zruší přihlášení
+          a mohli by se přihlásit jen ručně přidaní testovací uživatelé. Publikovaná (neověřená) aplikace
+          zvládne až 100 uživatelů; při přihlášení ukáže varování „Google tuto aplikaci neověřil“.</div>
+        <p>Volitelně v <a href="https://console.cloud.google.com/auth/scopes" target="_blank" rel="noopener">Data access</a>
+          přidejte oprávnění <code>https://www.googleapis.com/auth/drive.file</code>.</p>
+
+        <h3 id="krok-client">4. Client ID</h3>
+        <p>V <a href="https://console.cloud.google.com/auth/clients" target="_blank" rel="noopener">Clients</a>
+          otevřete klienta typu <b>Webová aplikace</b> (nebo ho vytvořte). V <b>Authorized JavaScript origins</b> mějte
+          <code>https://n-yachts.github.io</code> a pro spouštění na počítači <code>http://localhost:8082</code>.
+          Client ID zkopírujte a vložte do průvodce.</p>
+
+        <h3 id="krok-klic">5. API klíč</h3>
+        <p>Okno Google Disku (Picker), přes které otevřete seznam, který vám někdo nasdílel, potřebuje API klíč:</p>
+        <ol class="steps-list">
+          <li>V <a href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noopener">Credentials</a>
+              klikněte na <b>Create credentials → API key</b>.</li>
+          <li>Klíč omezte (<b>Edit API key</b>): <i>Application restrictions</i> → <b>Websites</b>:
+              <code>https://n-yachts.github.io/*</code> a <code>http://localhost:8082/*</code>;
+              <i>API restrictions</i> → <b>Restrict key</b> → <b>Google Picker API</b>. Uložte.</li>
+          <li>Zkopírujte klíč (začíná <code>AIza</code>) a vložte ho do průvodce.</li>
+        </ol>
+        <p>Díky omezení klíč nikdo jiný nevyužije. Ukládá se jen ve vašem prohlížeči.</p>
+        <figure><img src="help/img/pruvodce-klic.png?v=20261110-0839" alt="Krok průvodce: API klíč" loading="lazy"></figure>
+
+        <h3 id="prihlaseni">6. Přihlášení</h3>
+        <ol class="steps-list">
+          <li>Klikněte na <b>Přihlásit se přes Google</b> a vyberte účet.</li>
+          <li>Při varování <b>„Google tuto aplikaci neověřil“</b> klikněte na <b>Pokračovat</b>
+              (případně <b>Rozšířené</b> → <b>Přejít na …</b>). Je to vaše vlastní aplikace.</li>
+          <li>Povolte přístup <i>„k souborům Disku, které s touto aplikací používáte“</i>.</li>
+        </ol>
+        <p>Přihlášení platí asi hodinu. Když vyprší, u názvu seznamu se objeví <b>🔑 Obnovit přihlášení</b> –
+          seznam mezitím dál funguje a změny počkají.</p>
+      </section>
+
+      
+      <section id="seznamy">
+        <h2>Seznamy a předlohy</h2>
+        <p>Na úvodní obrazovce <b>Moje seznamy</b> vidíte všechny seznamy a u každého, kolik je odškrtnuto.</p>
+        <figure class="phone"><img src="help/img/seznamy.png?v=20261110-0839" alt="Přehled seznamů" loading="lazy"></figure>
+        <p>Tlačítkem <b>+ Nový seznam</b> založíte seznam z předlohy, kterou si pak upravíte podle sebe:</p>
+        <table>
+          <tbody>
+            <tr><td>⛵ Před vyplutím</td><td>motor, loď, bezpečnost, navigace, posádka, odplutí</td></tr>
+            <tr><td>❄️ Zazimování lodi</td><td>motor, voda a sanita, elektro, interiér, paluba a plachty, papíry</td></tr>
+            <tr><td>🧳 Balení na cesty</td><td>doklady, oblečení, hygiena, elektronika, výbava, před odjezdem – s typy <i>hory</i>, <i>moře</i>, <i>služební cesta</i></td></tr>
+            <tr><td>📝 Prázdný seznam</td><td>otevře se rovnou v úpravách</td></tr>
+          </tbody>
+        </table>
+        <figure class="phone"><img src="help/img/novy-seznam.png?v=20261110-0839" alt="Nový seznam z předlohy" loading="lazy"></figure>
+      </section>
+
+      <section id="odskrtavani">
+        <h2>Odškrtávání</h2>
+        <ul>
+          <li>Klepněte kamkoli na řádek položky – odškrtne se. Druhým klepnutím se vrátí.</li>
+          <li>Nahoře je <b>postup</b> (např. 6 / 31) a co právě probíhá: název, typy a kdy se začalo.</li>
+          <li>Klepnutím na název kategorie ji sbalíte nebo rozbalíte. U kategorie je vidět, kolik je hotovo.</li>
+          <li><b>Skrýt hotové</b> schová odškrtnuté položky i celé hotové kategorie – zbude jen to, co ještě chybí.</li>
+          <li>U sdíleného seznamu je u odškrtnuté položky vidět, kdo ji odškrtl.</li>
+          <li>Když je odškrtnuto všechno, panel zezelená: <b>🎉 Vše odškrtnuto</b>.</li>
+        </ul>
+        <figure class="half"><img src="help/img/vypluti.png?v=20261110-0839" alt="Kontrola před vyplutím" loading="lazy">
+          <figcaption>Kontrola před vyplutím – kategorie Motor je hotová.</figcaption></figure><figure class="half"><img src="help/img/seznam-skryt.png?v=20261110-0839" alt="Skrýt hotové" loading="lazy">
+          <figcaption>Se zapnutým „skrýt hotové“ zbude jen to, co chybí.</figcaption></figure>
+      </section>
+
+      <section id="znovu">
+        <h2>Začít znovu</h2>
+        <p>Před každým vyplutím nebo balením klepněte na <b>↺ Začít znovu</b>. Všechna zatržítka se vynulují.
+          Můžete zadat i <b>název</b> (např. „Krkonoše – leden“), který se pak ukazuje nahoře a v historii.</p>
+        <h3 id="typy">Typy výletu</h3>
+        <p>Pokud mají položky v seznamu typy, vyberete v okně <i>Začít znovu</i>, na co se chystáte. Můžete vybrat
+          i víc typů najednou (třeba <i>hory</i> + <i>služební cesta</i>). V seznamu pak budou:</p>
+        <ul>
+          <li>položky <b>bez typu</b> – ty jsou vždy (doklady, nabíječka…),</li>
+          <li>položky, které mají <b>aspoň jeden z vybraných typů</b>.</li>
+        </ul>
+        <p>Když nevyberete nic, budou v seznamu všechny položky. Dole v okně vidíte, kolik položek bude k odškrtnutí.</p>
+        <figure class="phone"><img src="help/img/novy-pruchod.png?v=20261110-0839" alt="Začít znovu s výběrem typů" loading="lazy"></figure>
+        <h3 id="historie">Historie</h3>
+        <p>Pokud bylo v předchozím průchodu něco odškrtnuto, uloží se při <i>Začít znovu</i> do historie: kdy se začalo
+          a skončilo, typy, název a kolik bylo hotovo. Najdete ji v menu <b>⋯ → Historie průchodů</b> –
+          hodí se třeba pro „kdy jsme naposledy zazimovali“.</p>
+        <figure class="phone"><img src="help/img/historie.png?v=20261110-0839" alt="Historie průchodů" loading="lazy"></figure>
+      </section>
+
+      <section id="upravy">
+        <h2>Úpravy položek</h2>
+        <p>V menu <b>⋯ → Upravit položky</b> se seznam přepne do úprav. Vidíte v něm <b>všechny</b> položky
+          (i ty, které do aktuálního výletu nepatří – jsou zešedlé) a jejich typy.</p>
+        <figure class="half"><img src="help/img/menu.png?v=20261110-0839" alt="Menu seznamu" loading="lazy"></figure><figure class="half"><img src="help/img/upravy.png?v=20261110-0839" alt="Úpravy položek" loading="lazy"></figure>
+        <ul>
+          <li><b>Klepnutím</b> na položku ji upravíte: název, kategorie, typy, poznámka; nebo ji smažete (dvojím klepnutím na Smazat).</li>
+          <li>Šipkami <b>▲ ▼</b> změníte pořadí v rámci kategorie.</li>
+          <li><b>+ Přidat do „kategorie“</b> pod každou kategorií, nebo <b>+ Položka</b> nahoře.
+              Novou kategorii založíte tak, že u položky napíšete nový název kategorie.</li>
+          <li>Typy pište oddělené čárkou (<code>hory, moře</code>), nebo klepněte na nabízené typy pod polem.
+              Prázdné pole = položka patří vždy. Nový typ vznikne prostě tím, že ho napíšete.</li>
+        </ul>
+        <p>Úpravy ukončíte tlačítkem <b>Hotovo</b>.</p>
+        <figure class="phone"><img src="help/img/uprava-polozky.png?v=20261110-0839" alt="Úprava položky" loading="lazy"></figure>
+      </section>
+
+      <section id="tabulky">
+        <h2>V Google Tabulkách</h2>
+        <p>Každý seznam je Google Tabulka <i>„Odškrtník – název“</i> ve složce <b>Odškrtník</b> ve vašem Disku
+          (menu ⋯ → <i>Otevřít v Google Tabulkách</i>). Delší seznam se v tabulce upravuje pohodlněji než v telefonu.</p>
+        <table>
+          <thead><tr><th>List</th><th>Obsah</th></tr></thead>
+          <tbody>
+            <tr><td><b>Položky</b></td><td><code>id</code> · <code>kategorie</code> · <code>položka</code> · <code>poznámka</code> · <code>typy</code> · <code>hotovo</code> (zaškrtávací políčko) · <code>odškrtl</code> · <code>kdy</code></td></tr>
+            <tr><td><b>Stav</b></td><td>aktuální průchod: typy, kdy a kdo začal, název</td></tr>
+            <tr><td><b>Historie</b></td><td>předchozí průchody</td></tr>
+          </tbody>
+        </table>
+        <ul>
+          <li><b>Nový řádek</b> stačí napsat do sloupců <i>kategorie</i>, <i>položka</i> (a případně <i>typy</i>, <i>poznámka</i>).
+            Sloupec <i>id</i> nechte prázdný – aplikace ho doplní sama.</li>
+          <li>Prázdná <i>kategorie</i> znamená „stejná jako řádek nad ním“ – stačí ji napsat u první položky skupiny.
+            Aplikace ji pak doplní i do dalších řádků.</li>
+          <li><b>Pořadí řádků</b> = pořadí v aplikaci. Kategorie jsou seřazené podle toho, kde se v tabulce objeví poprvé.</li>
+          <li>Odškrtávat jde i přímo v tabulce (sloupec <i>hotovo</i>).</li>
+        </ul>
+        <div class="warn"><b>Nepřejmenovávejte listy ani sloupce</b> a neměňte hodnoty ve sloupci <i>id</i> –
+          podle nich Odškrtník položky poznává.</div>
+      </section>
+
+      <section id="sdileni">
+        <h2>Sdílení</h2>
+        <h3 id="sdileni-poslat">Nasdílet seznam</h3>
+        <ol class="steps-list">
+          <li>V seznamu klepněte na <b>👥 Sdílet</b>.</li>
+          <li>Napište e-mail Google účtu (posádka, rodina…) a klepněte na <b>Sdílet</b>.</li>
+          <li>Dotyčnému přijde e-mail od Googlu s odkazem na Odškrtník.</li>
+        </ol>
+        <p>V okně sdílení vidíte, <b>kdo má přístup</b>, a jako vlastník ho můžete <b>odebrat</b>. Je tam i odkaz
+          na seznam, který můžete poslat třeba přes WhatsApp – funguje ale jen lidem, se kterými je seznam sdílený.</p>
+        <figure class="phone"><img src="help/img/sdileni.png?v=20261110-0839" alt="Sdílení seznamu" loading="lazy"></figure>
+
+        <h3 id="sdileni-otevrit">Otevřít seznam, který vám někdo nasdílel</h3>
+        <p>Odškrtník má přístup jen k tabulkám, které mu výslovně ukážete. Proto je potřeba sdílený seznam
+          <b>jednou potvrdit</b> v okně Google Disku:</p>
+        <ol class="steps-list">
+          <li>Otevřete odkaz z e-mailu (nebo v přehledu klepněte na <b>📥 Otevřít sdílený</b>).</li>
+          <li>Klepněte na <b>Zpřístupnit seznam</b>. Otevře se okno Google Disku se seznamem.</li>
+          <li>Vyberte ho a klepněte na <b>Vybrat</b>. Hotovo – seznam už máte mezi svými natrvalo.</li>
+        </ol>
+        <figure class="phone"><img src="help/img/zpristupneni.png?v=20261110-0839" alt="Zpřístupnění sdíleného seznamu" loading="lazy"></figure>
+        <div class="tip"><b>Seznam v okně nevidíte?</b> Zkontrolujte, že jste v Odškrtníku přihlášeni stejným účtem,
+          na jehož e-mail byl seznam sdílen.</div>
+      </section>
+
+      
+      <section id="synchronizace">
+        <h2>Ukládání a bez signálu</h2>
+        <p>Pod názvem seznamu je vidět stav:</p>
+        <table>
+          <tbody>
+            <tr><td>✓ Uloženo · právě teď</td><td>vše je v Google Tabulce</td></tr>
+            <tr><td>⟳ Ukládám…</td><td>změny se právě odesílají</td></tr>
+            <tr><td>📶 Offline · ⏳ 1 změna čeká</td><td>bez signálu – změny počkají v telefonu a odešlou se po připojení</td></tr>
+            <tr><td>🔑 Obnovit přihlášení</td><td>přihlášení vypršelo – klepněte; změny mezitím čekají</td></tr>
+          </tbody>
+        </table>
+        <ul>
+          <li>Změny od ostatních se načítají <b>každých 15 sekund</b>, když máte seznam otevřený, a hned po návratu do aplikace.</li>
+          <li>Seznam se ukládá i do telefonu, takže <b>v marině bez signálu</b> ho pořád vidíte a můžete odškrtávat.
+            Když otevřete aplikaci bez přihlášení, ukáže se rovnou naposledy otevřený seznam.</li>
+          <li>Když dva lidé změní stejnou položku současně, platí poslední změna.</li>
+        </ul>
+      </section>
+
+      <section id="instalace">
+        <h2>Instalace do telefonu</h2>
+        <ul>
+          <li><b>Android (Chrome):</b> tlačítko <b>📲 Nainstalovat</b> v aplikaci, nebo menu ⋮ → <i>Nainstalovat aplikaci</i>.</li>
+          <li><b>iPhone (Safari):</b> Sdílet → <i>Přidat na plochu</i> (Client ID a API klíč bude potřeba zadat znovu).</li>
+          <li><b>Počítač:</b> ikona instalace v adresním řádku Chromu nebo Edge.</li>
+        </ul>
+        <p>Aplikace se přizpůsobí i tmavému režimu.</p>
+        <figure><img src="help/img/pocitac-tmavy.png?v=20261110-0839" alt="Odškrtník na počítači v tmavém režimu" loading="lazy"></figure>
+      </section>
+
+      <section id="potize">
+        <h2>Řešení potíží</h2>
+        <details class="faq" open><summary>Nevidím novou verzi</summary>
+          <p>Načtěte stránku znovu s <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd>, v telefonu aplikaci zavřete a otevřete.
+            Verzi vidíte v <i>Nastavení</i>.</p></details>
+        <details class="faq"><summary>„V Google Cloud není povolené Google Drive API“</summary>
+          <p>API je potřeba povolit ve <b>stejném projektu, ke kterému patří Client ID</b> (číslo projektu je
+            v hlášce i na začátku Client ID). Zkontrolujte, že máte nahoře v konzoli vybraný správný projekt,
+            a povolte <a href="https://console.cloud.google.com/apis/library/drive.googleapis.com" target="_blank" rel="noopener">Drive API</a>,
+            <a href="https://console.cloud.google.com/apis/library/sheets.googleapis.com" target="_blank" rel="noopener">Sheets API</a> a
+            <a href="https://console.cloud.google.com/apis/library/picker.googleapis.com" target="_blank" rel="noopener">Picker API</a>.
+            Po povolení počkejte pár minut. Vaše seznamy ani změny se mezitím neztratí.</p></details>
+        <details class="faq"><summary>Google Picker API není v omezeních API klíče</summary>
+          <p>V nabídce <i>API restrictions</i> se ukazují jen povolená API – nejdřív Picker API povolte a stránku klíče obnovte.
+            Případně zvolte <i>Don't restrict key</i> a nechte jen omezení na weby.</p></details>
+        <details class="faq"><summary>Chyba origin_mismatch</summary>
+          <p>V Client ID chybí <code>https://n-yachts.github.io</code> (nebo <code>http://localhost:8082</code>) v <i>Authorized JavaScript origins</i>.</p></details>
+        <details class="faq"><summary>Okno Google Disku se neotevře nebo hlásí chybu</summary>
+          <p>Zkontrolujte, že je povolené <b>Google Picker API</b> a že API klíč má v omezeních adresu
+            <code>https://n-yachts.github.io/*</code> a API <i>Google Picker API</i>. Klíč změníte přes
+            <i>Nastavení → Znovu spustit průvodce</i>.</p></details>
+        <details class="faq"><summary>„K seznamu už nemáte přístup“</summary>
+          <p>Vlastník seznam smazal nebo vám odebral sdílení. Seznam zmizí z vašeho přehledu.</p></details>
+        <details class="faq"><summary>Kamarád nemůže přihlásit (access_denied)</summary>
+          <p>Aplikace je v Google Cloud v režimu <i>Testing</i>. Publikujte ji (<a href="#krok-souhlas">krok 3</a>), nebo ho přidejte mezi <i>Test users</i>.</p></details>
+        <details class="faq"><summary>Upravil(a) jsem tabulku ručně a v aplikaci to není vidět</summary>
+          <p>Změny ostatních (i ruční úpravy v Tabulkách) se načítají každých 15 s, když je seznam otevřený. Přepněte se
+            z aplikace a zpět, nebo seznam zavřete a otevřete.</p></details>
+      </section>
+
+<section id="soukromi">
+        <h2>Soukromí a oprávnění</h2>
+        <p>Odškrtník žádá jen oprávnění <code>drive.file</code> – <b>vidí a mění jen tabulky, které sám založil,
+          nebo které mu ukážete</b> v okně Google Disku. Ostatní soubory ve vašem Disku nevidí.</p>
+        <p>Data jsou jen v Google Tabulkách a v mezipaměti vašeho prohlížeče. Aplikace nemá server a nic nesleduje.
+          Přístup odeberete v <a href="https://myaccount.google.com/connections" target="_blank" rel="noopener">nastavení Google účtu</a>.</p>
+        <a class="back" href="#uvod">↑ Zpět nahoru</a>
+      </section>
+    </article>
+  </div>
+</body>
+</html>

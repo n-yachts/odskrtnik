@@ -1,0 +1,22 @@
+{
+  "name": "Odškrtník – zaškrtávací seznamy",
+  "short_name": "Odškrtník",
+  "description": "Zaškrtávací seznamy v Google Tabulkách – kontrola před vyplutím, zazimování, balení na cesty.",
+  "lang": "cs",
+  "id": "/odskrtnik/",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f4f2ee",
+  "theme_color": "#1f5f8b",
+  "categories": ["productivity", "travel", "lifestyle"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Nápověda", "url": "./help.html", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" }] }
+  ]
+}
