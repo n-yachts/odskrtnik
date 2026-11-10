@@ -43,6 +43,7 @@ class FakeGoogle:
         self.files = {}   # id -> {name, owner, appProperties, trashed, perms:[{id,email,role}], granted:set, sheets:{title:[rows]}}
         self.n = 0
         self.offline = set()   # uživatelé „bez signálu“ – jejich požadavky selžou jako bez sítě
+        self.stale = None      # {fileId: kopie listů} = batchGet vrací starší stav (zpožděné čtení po zápisu)
         self.disabled = False  # True = „Google Drive API has not been used in project … or it is disabled“
 
     # ----- pomocné -----
@@ -202,7 +203,8 @@ class FakeGoogle:
                     self.write(sheets[title], start, c0, d['values'])
                 return ok({})
             if rest == '/values:batchGet':
-                vals = self.get_values(f, q['ranges'])
+                src = {'sheets': self.stale[fid]} if self.stale and fid in self.stale else f
+                vals = self.get_values(src, q['ranges'])
                 if vals is None:
                     return err(400, 'Unable to parse range: ' + q['ranges'])
                 return ok({'valueRanges': [{'values': vals}]})

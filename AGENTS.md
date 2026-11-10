@@ -85,6 +85,11 @@ Stejně jako Nákupník: nepovolené API → česká hláška; 429/kvóty → ja
 - **Nový seznam:** dialog s předlohami (`TEMPLATES` v `model.js`) → `createList(name, items)`: soubor, listy,
   validace BOOLEAN, záhlaví + položky + Stav jedním `values:batchUpdate`. Prázdná předloha otevře rovnou úpravy.
 - **Odškrtnutí:** `store.tick` → optimisticky hned, ve frontě `tickItem` (F:H).
+- **Odeslané, nepotvrzené změny (`store.sent`):** po odeslání se změna dál zobrazuje, dokud ji načtená data
+  nepotvrdí (`confirmed()` v `store.js`), nejdéle 60 s. Google těsně po zápisu občas vrátí starší stav a bez toho
+  rychle odškrtnuté položky „odskakovaly“ zpět. Proto musí být každá operace v `applyOp` **opakovatelná**
+  (použití na už změněná data nic nezmění – i `swap` nese `after`). Test: `g.stale` v `tools/fakegoogle.py`.
+  Požadavky na API mají `cache: 'no-store'`.
 - **Začít znovu:** dialog s typy (`allTypes`) a názvem → `store.reset(run, hist)`; předvyplní typy minulého průchodu,
   ukazuje počet položek (`progress(items, typy).total`).
 - **Co je v průchodu:** `inRun` – položka bez typů vždy; průchod bez typů = vše; jinak průnik (bez ohledu na

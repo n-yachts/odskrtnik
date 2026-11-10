@@ -100,6 +100,25 @@ def main():
         assert next(r for r in sh['Položky'] if r[2] == 'Pohorky')[5] is False
         a.click('.tick:has-text("Pohorky")'); saved(a)
 
+        # --- Rychlé odškrtávání, Google po zápisu chvíli vrací starší data ---
+        import copy
+        quick = ['Spodní prádlo a ponožky', 'Trička', 'Pyžamo', 'Nepromokavá bunda']
+        g.stale = {fid: copy.deepcopy(sh)}
+        for n in quick:
+            a.click(f'.tick:has-text("{n}")')
+        saved(a)
+        resync(a)                                                        # i další načtení je ještě staré
+        for n in quick:
+            assert next(r for r in sh['Položky'] if r[2] == n)[5] is True, n
+            assert a.locator(f'.item.done:has-text("{n}")').count() == 1, f'odskočilo: {n}'
+        g.stale = None
+        resync(a)
+        for n in quick:
+            assert a.locator(f'.item.done:has-text("{n}")').count() == 1, n
+        a.click('.tick:has-text("Pyžamo")'); saved(a)                    # po potvrzení jde normálně vrátit
+        assert a.locator('.item.done:has-text("Pyžamo")').count() == 0
+        assert next(r for r in sh['Položky'] if r[2] == 'Pyžamo')[5] is False
+
         # Skrýt hotové
         a.check('#chk-hide')
         assert 'Pohorky' not in names(a)

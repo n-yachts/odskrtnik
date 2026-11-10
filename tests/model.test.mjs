@@ -1,7 +1,7 @@
 // Unit testy logiky seznamu: node tests/model.test.mjs
 import assert from 'node:assert/strict';
 import { parseTypes, formatTypes, allTypes, inRun, groupByCategory, progress, neighbour, plural, TEMPLATES, templateItems } from '../js/model.js';
-import { applyOp } from '../js/store.js';
+import { applyOp, confirmed } from '../js/store.js';
 
 // Typy výletu
 assert.deepEqual(parseTypes('hory, moře; služební  cesta'), ['hory', 'moře', 'služební cesta']);
@@ -74,5 +74,24 @@ l = applyOp(items, { op: 'add', item: it('ridicak', 'Doklady') });
 assert.deepEqual(l.map(i => i.id), ['pas', 'plavky', 'pohorky', 'karta', 'ridicak', 'oblek']);   // za poslední položku kategorie
 l = applyOp(items, { op: 'add', item: it('lekarna', 'Zdraví') });
 assert.equal(l[l.length - 1].id, 'lekarna');                        // nová kategorie na konec
+
+// Prohození je opakovatelné: druhé použití (na už prohozená data) nic nevrátí zpět
+const sw = { op: 'swap', a: 'pas', b: 'karta', after: true };
+l = applyOp(items, sw);
+assert.deepEqual(applyOp(l, sw).map(i => i.id), l.map(i => i.id));
+assert.equal(confirmed(sw, items), false);
+assert.equal(confirmed(sw, l), true);
+
+// Potvrzení odeslaných změn načtenými daty
+assert.equal(confirmed({ op: 'tick', id: 'pas', done: true }, items), false);   // Google vrátil starší stav
+assert.equal(confirmed({ op: 'tick', id: 'karta', done: true }, items), true);
+assert.equal(confirmed({ op: 'tick', id: 'smazana', done: true }, items), true);
+assert.equal(confirmed({ op: 'add', item: { id: 'novy' } }, items), false);
+assert.equal(confirmed({ op: 'del', ids: ['pas'] }, items), false);
+assert.equal(confirmed({ op: 'del', ids: ['xx'] }, items), true);
+assert.equal(confirmed({ op: 'set', item: { ...items[1], name: 'Plavky 2' } }, items), false);
+assert.equal(confirmed({ op: 'set', item: { ...items[1] } }, items), true);
+assert.equal(confirmed({ op: 'reset', run: { started: 't2' } }, items, { started: 't1' }), false);
+assert.equal(confirmed({ op: 'reset', run: { started: 't2' } }, items, { started: 't2' }), true);
 
 console.log('všechny testy prošly');

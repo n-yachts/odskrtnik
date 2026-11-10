@@ -1,7 +1,7 @@
 // Service worker Odškrtníku: umožní instalaci aplikace a její spuštění i při slabém signálu.
 // Strategie „nejdřív síť“: vždy se zkusí nová verze z webu, mezipaměť je jen záloha,
 // takže aktualizace se projeví hned. Volání Googlu (přihlášení, Disk, Tabulky) se nikdy neukládají.
-const VERSION = '20261110-0839';
+const VERSION = '20261110-1119';
 const CACHE = `odskrtnik-${VERSION}`;
 const SHELL = [
   './',

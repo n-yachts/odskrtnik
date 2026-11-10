@@ -1,7 +1,7 @@
 // Volání Google Drive API v3, Sheets API v4 a Google Pickeru.
 // Oprávnění je jen drive.file: aplikace vidí jen tabulky, které sama založila,
 // nebo které jí uživatel ukázal v okně Google Disku (Picker).
-import { getStoredToken, clearToken } from './auth.js?v=20261110-0839';
+import { getStoredToken, clearToken } from './auth.js?v=20261110-1119';
 
 const DRIVE = 'https://www.googleapis.com/drive/v3';
 const SHEETS = 'https://sheets.googleapis.com/v4/spreadsheets';
@@ -26,6 +26,7 @@ async function call(url, { method = 'GET', body, query } = {}) {
   try {
     res = await fetch(u, {
       method,
+      cache: 'no-store',   // vždy čerstvá data, nikdy z mezipaměti prohlížeče
       headers: { Authorization: `Bearer ${token}`, ...(body ? { 'Content-Type': 'application/json' } : {}) },
       body: body ? JSON.stringify(body) : undefined,
     });

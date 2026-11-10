@@ -1,7 +1,7 @@
-import { initAuth, signIn, signOut, getStoredToken, SCOPES } from './auth.js?v=20261110-0839';
-import * as G from './google.js?v=20261110-0839';
-import { ListStore, newId, nowIso, forgetList } from './store.js?v=20261110-0839';
-import { TEMPLATES, templateItems, parseTypes, formatTypes, sameType, allTypes, inRun, groupByCategory, progress, neighbour, plural } from './model.js?v=20261110-0839';
+import { initAuth, signIn, signOut, getStoredToken, SCOPES } from './auth.js?v=20261110-1119';
+import * as G from './google.js?v=20261110-1119';
+import { ListStore, newId, nowIso, forgetList } from './store.js?v=20261110-1119';
+import { TEMPLATES, templateItems, parseTypes, formatTypes, sameType, allTypes, inRun, groupByCategory, progress, neighbour, plural } from './model.js?v=20261110-1119';
 
 // ---------- Úložiště v prohlížeči ----------
 const LS = {
